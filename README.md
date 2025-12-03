@@ -1,0 +1,1 @@
+# data_analisys_and_aritficial_intellegence_tasks_2_year_of_study
