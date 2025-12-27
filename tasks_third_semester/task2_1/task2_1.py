@@ -90,7 +90,9 @@ Titanic_dataset.csv - Icedrive"""
     bins = [0, 18, 30, 50, np.inf]
     labels = [0, 1, 2, 3]
 
-    titanic_data['Age_Category'] = pd.cut(titanic_data['age'], bins=bins, labels=labels, right=True, include_lowest=True)
+    # Добавление целевой переменной "Категория возраста" для предсказания возраста
+    titanic_data['Age_Category'] = pd.cut(titanic_data['age'], bins=bins, labels=labels, right=True,
+    include_lowest=True)
     print("\nСоздана целевая переменная 'Age_Category':")
     print(titanic_data[['age', 'Age_Category']].head())
     print("Распределение Age_Category:")
@@ -162,4 +164,5 @@ Titanic_dataset.csv - Icedrive"""
 
     print("\nВсе модели оценены")
 
-if __name__ == '__main__': task2_1()
+if __name__ == '__main__':
+    task2_1()

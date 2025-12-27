@@ -63,6 +63,7 @@ keras. Загрузите набор данных Titanic из CSV-файла.
 
     # Преобразуем целевую переменную 'sex' в числовой формат (0 для male, 1 для female)
     Titanic_data['sex_encoded'] = Titanic_data['sex'].map({'male': 0, 'female': 1})
+    # OneHot кодирование столбца sex_encoded с двумя классами мужчиной и женщиной
     y = to_categorical(Titanic_data['sex_encoded'], num_classes=2)
 
     # Определяем входные признаки
@@ -72,15 +73,25 @@ keras. Загрузите набор данных Titanic из CSV-файла.
     # Заполнение пропущенных значений и One-Hot кодирование для Embarked
     # Используем ColumnTransformer для обработки различных типов столбцов.
 
+    # Что происходит: Мы создаем списки признаков, разделяя их на числовые 'age' и 'fare' и категориальные
+    # 'embarked'. Это позволит позже обрабатывать их раздельно различными способами
     numerical_features = ['age', 'fare']
     categorical_features = ['embarked']
 
+    # Создается конвейер (Pipeline) для обработки числовых признаков: SimpleImputer(strategy='median'): Заполняет
+    # пропуски в числовых признаках медианой, что защищает от искажения среднего значения. StandardScaler(): Приводит
+    # числовые признаки к нулевому среднему и единичной дисперсии, что улучшает работу многих моделей
     numerical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='median')),
         ('scaler', StandardScaler())
     ])
 
     # Заполнение NaN в Embarked модой
+    # Конвейер для категориальных признаков включает: SimpleImputer(strategy='most_frequent'): Пропущенные значения
+    # заполняются модой (наиболее распространенным значением), что подходит для категориальных данных.
+    # OneHotEncoder(handle_unknown='ignore'): Кодирует категориальные признаки в виде binary-векторов (one-hot), что
+    # полезно для множества моделей ML. Параметр handle_unknown='ignore' игнорирует неизвестные категории, предотвращая
+    # ошибки при тестировании.
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='most_frequent')),
         ('onehot', OneHotEncoder(handle_unknown='ignore'))
@@ -253,4 +264,5 @@ keras. Загрузите набор данных Titanic из CSV-файла.
     print(classification_report(y_true_classes, y_pred_classes, target_names=['Мужчина', 'Женщина']))
 
 
-if __name__ == '__main__': tasks4_1()
+if __name__ == '__main__':
+    tasks4_1()

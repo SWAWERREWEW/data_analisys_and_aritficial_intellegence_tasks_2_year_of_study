@@ -50,6 +50,10 @@ def task3_1():
     print(f"\nУдалены столбцы: {columns_to_drop}")
     print("Оставшиеся столбцы:", titanic_data_processed.columns.tolist())
 
+    # Проверка на пустые значения в столбцах
+    missing_values = titanic_data.isnull().sum()
+    print(missing_values[missing_values > 0])  # Показываем только столбцы с пропусками
+
     # - 'age': Числовой, заполним медианой.
     # - 'embark_town': Категориальный, заполним модой.
     imputer_age = SimpleImputer(strategy='median')
@@ -153,4 +157,5 @@ def task3_1():
 
     print("Завершено")
 
-if __name__ == '__main__': task3_1()
+if __name__ == '__main__':
+    task3_1()
